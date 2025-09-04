@@ -120,6 +120,10 @@
       -webkit-tap-highlight-color: transparent;
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     
     #jumpBtn::after {
@@ -172,6 +176,7 @@
       border-radius: 50%;
       border-top-color: white;
       animation: spin 1s ease-in-out infinite;
+      vertical-align: middle;
     }
 
     @keyframes spin {
@@ -202,6 +207,7 @@
     (function () {
       // 避免快速点击
       let isProcessing = false;
+      let loadingTimer = null;
       
       // 获取DOM元素
       const jumpButton = document.getElementById('jumpBtn');
@@ -216,6 +222,17 @@
       
       // 检查必要元素是否存在
       if (!jumpButton || !urlInput || !errorMsg) return;
+      
+      // 恢复按钮状态函数
+      function restoreButtonState(originalText) {
+        if (loadingTimer) {
+          clearTimeout(loadingTimer);
+          loadingTimer = null;
+        }
+        jumpButton.innerHTML = originalText;
+        jumpButton.disabled = false;
+        isProcessing = false;
+      }
       
       // 执行跳转
       function performJump() {
@@ -236,39 +253,17 @@
         
         if (!targetUrl) {
           errorMsg.textContent = '请输入要跳转的地址';
-          // 恢复按钮状态
-          jumpButton.innerHTML = originalText;
-          jumpButton.disabled = false;
-          isProcessing = false;
+          // 立即恢复按钮状态
+          restoreButtonState(originalText);
           return;
         }
         
-        // 执行跳转 - 不进行任何URL验证
-        let finalUrl = targetUrl;
-        
-        try {
-          // 对于没有协议的URL，尝试补全http://
-          if (!finalUrl.includes('://')) {
-            finalUrl = 'http://' + finalUrl;
-          }
+        window.location.href = targetUrl;
           
-          window.location.href = finalUrl;
-          
-          // 跳转后如果800ms内没离开页面，说明跳转失败
-          setTimeout(() => {
-            errorMsg.textContent = '跳转失败，请检查URL是否正确';
-            // 恢复按钮状态
-            jumpButton.innerHTML = originalText;
-            jumpButton.disabled = false;
-            isProcessing = false;
-          }, 800);
-        } catch (e) {
-          errorMsg.textContent = '跳转发生错误: ' + (e.message || '未知错误');
-          // 恢复按钮状态
-          jumpButton.innerHTML = originalText;
-          jumpButton.disabled = false;
-          isProcessing = false;
-        }
+        // 设置3秒后自动恢复按钮状态
+        loadingTimer = setTimeout(() => {
+          restoreButtonState(originalText);
+        }, 3000);
       }
       
       // 绑定跳转事件
