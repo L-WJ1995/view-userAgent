@@ -7,8 +7,24 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="uaText"></div>
+  <div>
+    <input id="jumpUrl" type="text" placeholder="请输入要跳转的地址" value="zipapp://appid.1002128/index.html">
+    <button id="jumpBtn" type="button">跳转</button>
+  </div>
   <script>
-   document.write(window.navigator.userAgent)
+    (function () {
+      var jumpButton = document.getElementById('jumpBtn');
+      var urlInput = document.getElementById('jumpUrl');
+      var uaText = document.getElementById('uaText');
+      if (uaText) uaText.textContent = window.navigator.userAgent;
+      if (!jumpButton || !urlInput) return;
+      jumpButton.addEventListener('click', function () {
+        var targetUrl = (urlInput.value || '').trim();
+        if (!targetUrl) return;
+        window.location.href = targetUrl;
+      });
+    })();
   </script>
 </body>
 </html>
