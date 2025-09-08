@@ -206,12 +206,6 @@
       // 绑定跳转事件
       jumpButton.addEventListener('click', performJump);
       
-      // 支持回车键跳转
-      urlInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-          performJump();
-        }
-      });
     })();
   </script>
 </body>
