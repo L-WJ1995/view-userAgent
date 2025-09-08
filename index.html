@@ -190,11 +190,16 @@
       window.history.go(-(history.length - 1))
       <button id="jumpBtn" type="button">跳转</button>
     </div>
+     <div class="input-group">
+      window.history.go(-(history.length + 1))
+      <button id="otherJumpBtn" type="button">跳转</button>
+    </div>
   </div>
 
   <script>
     (function () {
       const jumpButton = document.getElementById('jumpBtn');
+  const otherJumpBtn = document.getElementById('otherJumpBtn');
       // 执行跳转
       function performJump() {
 
@@ -202,10 +207,17 @@
         // window.location.href = targetUrl;
      
       }
+
+      function otherPerformJump() {
+
+        window.history.go(-(window.history.length + 1))
+        // window.location.href = targetUrl;
+     
+      }
       
       // 绑定跳转事件
       jumpButton.addEventListener('click', performJump);
-      
+      otherJumpBtn.addEventListener('click', otherPerformJump);
     })();
   </script>
 </body>
