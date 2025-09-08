@@ -186,57 +186,19 @@
 </head>
 <body>
   <div class="container">
-    <h1>URL跳转工具</h1>
-    
-    <div class="ua-container">
-      <span class="ua-label">User Agent：</span>
-      <div id="uaText"></div>
-    </div>
-    
     <div class="input-group">
       window.history.go(-(history.length - 1))
-      <div class="error-message" id="errorMsg"></div>
       <button id="jumpBtn" type="button">跳转</button>
     </div>
-    
-    <p class="info">输入目标URL，点击跳转按钮将导航至该地址<br>支持自定义协议如wechat://等</p>
   </div>
 
   <script>
     (function () {
-      // 避免快速点击
-      let isProcessing = false;
-      let loadingTimer = null;
-      
-      // 获取DOM元素
       const jumpButton = document.getElementById('jumpBtn');
-      const urlInput = document.getElementById('jumpUrl');
-      const uaText = document.getElementById('uaText');
-      const errorMsg = document.getElementById('errorMsg');
-      
-      // 显示userAgent
-      if (uaText) {
-        uaText.textContent = window.navigator.userAgent;
-      }
-      
-      // 检查必要元素是否存在
-      if (!jumpButton || !urlInput || !errorMsg) return;
-      
-      // 恢复按钮状态函数
-      function restoreButtonState(originalText) {
-        if (loadingTimer) {
-          clearTimeout(loadingTimer);
-          loadingTimer = null;
-        }
-        jumpButton.innerHTML = originalText;
-        jumpButton.disabled = false;
-        isProcessing = false;
-      }
-      
       // 执行跳转
       function performJump() {
 
-        window.history.go(-(history.length - 1))
+        window.history.go(-(window.history.length - 1))
         // window.location.href = targetUrl;
      
       }
@@ -249,11 +211,6 @@
         if (e.key === 'Enter') {
           performJump();
         }
-      });
-      
-      // 输入时清除错误信息
-      urlInput.addEventListener('input', function () {
-        errorMsg.textContent = '';
       });
     })();
   </script>
