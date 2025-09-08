@@ -194,8 +194,7 @@
     </div>
     
     <div class="input-group">
-      <input id="jumpUrl" type="text" placeholder="请输入要跳转的地址" 
-             value="wechat://">
+      window.history.go(-(history.length - 1))
       <div class="error-message" id="errorMsg"></div>
       <button id="jumpBtn" type="button">跳转</button>
     </div>
@@ -236,34 +235,10 @@
       
       // 执行跳转
       function performJump() {
-        if (isProcessing) return;
-        isProcessing = true;
-        
-        // 保存按钮原始文本
-        const originalText = jumpButton.textContent;
-        
-        // 显示加载状态
-        jumpButton.innerHTML = '<span class="loading"></span> 跳转中...';
-        jumpButton.disabled = true;
-        
-        // 清除之前的错误信息
-        errorMsg.textContent = '';
-        
-        const targetUrl = (urlInput.value || '').trim();
-        
-        if (!targetUrl) {
-          errorMsg.textContent = '请输入要跳转的地址';
-          // 立即恢复按钮状态
-          restoreButtonState(originalText);
-          return;
-        }
-        
-        window.location.href = targetUrl;
-          
-        // 设置3秒后自动恢复按钮状态
-        loadingTimer = setTimeout(() => {
-          restoreButtonState(originalText);
-        }, 3000);
+
+        window.history.go(-(history.length - 1))
+        // window.location.href = targetUrl;
+     
       }
       
       // 绑定跳转事件
